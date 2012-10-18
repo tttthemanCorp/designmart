@@ -1,0 +1,415 @@
+<?php
+// $Id: image_annotate.module,v 1.7 2010/02/17 11:27:28 hunvreus Exp $
+// 
+// 
+// Converting 6.x modules to 7.x - http://drupal.org/node/224333
+// Proper D7 add_js - http://drupal.org/node/224333#drupal_add_js_options
+// Image.field.inc - http://api.drupal.org/api/drupal/modules--image--image.field.inc/7
+// Render image fields - http://benbuckman.net/tech/11/04/how-render-image-fields-drupal-7
+// Updating CCK - http://drupal.org/node/728792
+// DB queries - http://drupal.org/node/310075
+// Hook into image api - http://api.drupal.org/api/drupal/modules--image--image.api.php/7
+
+/**
+ * Implements of hook_comment_insert
+ * Rewrite for D7
+ */
+function image_annotate_comment_insert($comment) {
+  if (user_access('create image annotations') || user_access('administer image annotations')) {
+
+      if (is_numeric($_POST['image-annotate']) && $_POST['image-annotate']) {
+        global $user;
+        $field = preg_replace("/[^a-zA-Z0-9_s]/", "", $_POST['image-annotate-field']);
+        // TODO: check position.size is inside the picture
+        $top = (int)$_POST['image-annotate-top'];
+        $left = (int)$_POST['image-annotate-left'];
+        $width = (int)$_POST['image-annotate-width'];
+        $height = (int)$_POST['image-annotate-height'];
+		
+        db_query('INSERT INTO {image_annotate} (cid, field_name, size_width, size_height, position_top, position_left) VALUES (:cid, :fieldname, :width, :height, :top, :left)', 
+          	array(':width' => $width, ':height' => $height, ':top' => $top, ':left' => $left, ':cid' => $comment->cid, ':fieldname' => $field));
+      }
+
+  }
+}
+
+/**
+ * Implements of hook_comment_update
+ * Rewrite for D7
+ */
+function image_annotate_comment_update($comment) {
+  if (user_access('create image annotations') || user_access('administer image annotations')) {
+
+      if (is_numeric($_POST['image-annotate']) && $_POST['image-annotate']) {
+        global $user;
+        $field = preg_replace("/[^a-zA-Z0-9_s]/", "", $_POST['image-annotate-field']);
+        // TODO: check position.size is inside the picture
+        $top = (int)$_POST['image-annotate-top'];
+        $left = (int)$_POST['image-annotate-left'];
+        $width = (int)$_POST['image-annotate-width'];
+        $height = (int)$_POST['image-annotate-height'];
+		
+        db_query('UPDATE {image_annotate} SET size_width = :width, size_height = :height, position_top = :top, position_left = :left WHERE cid = :cid', 
+          	array(':width' => $width, ':height' => $height, ':top' => $top, ':left' => $left, ':cid' => arg(1)));
+      }
+
+  }
+}
+
+/**
+ * // Implements of hook_link(). //D6
+ * // http://api.drupal.org/api/drupal/developer--hooks--core.php/function/hook_link/6#comment-12124
+ * // $links parameter removed http://api.drupal.org/api/drupal/modules--node--node.module/function/node_view/7#comment-12209
+ * Example - http://drupal.org/update/modules/6/7#node_links
+ * //Implements hook_node_view(). //or use below?
+ * Implements hook_comment_view //D7
+ * //@todo Rewrite for Drupal 7
+ */
+function image_annotate_comment_view($comment, $view_mode, $langcode = NULL) {
+ if ($view_mode == 'full') {
+    if (user_access('view image annotations') || user_access('create image annotations') || user_access('administer image annotations')) {
+        //$note = db_fetch_object
+      
+      $result = db_query('SELECT aid, field_name FROM {image_annotate} WHERE cid = :cid', array(':cid' => $comment->cid));
+      //$note = $result->fetchObject();
+      foreach ($result as $note) {
+	      //the available data would be mapped to object properties here (inside foreach)
+	      if ($note->aid) {
+	        $links = array(
+	            'title' => t('view image note'),
+	            'href' => $_GET['q'],
+	            'fragment' => 'image-annotate-add-' . $note->field_name,
+	            'attributes' => array(
+	              'title' => t('go to the picture'),
+	              'rel' => 'image-annotate-' . $note->aid,
+	            ),
+	        );
+	        $comment->content['links']['comment']['#links']['annotation_view'] = $links;
+	      }
+	  }//foreach
+    }
+ }
+}
+
+/**
+ * Implements of hook_entity_info_alter()
+ */
+function image_annotate_entity_info_alter(&$entity_info)
+{
+	$entity_info['comment']['view modes']['Annotation'] = array
+	(
+			'label' => t('Annotation'),
+			'custom settings' => TRUE,
+	);
+}
+
+/**
+ * Implements of hook_menu()
+ */
+function image_annotate_menu() {
+  $items = array();
+
+  $items['image-annotate/create'] = array(
+    'title' => 'Save note',
+    'page callback' => '_image_annotate_note_create',
+    'access callback' => 'image_annotate_node_access',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['image-annotate/edit'] = array(
+    'title' => 'Note edit form',
+    'page callback' => '_image_annotate_note_edit',
+    'access callback' => 'image_annotate_node_access',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Return permissions for editing/creating annotations for the current user.
+ * 
+ * hook_access removed in favor of hook_node_access. //D7
+ */
+function image_annotate_node_access() {
+  return user_access('administer image annotations') || user_access('create image annotations');
+}
+
+
+/**
+ * theme function
+ */
+/*
+function theme_comment_form__node_design__popup($variables) {
+	dpm($variables, '__node_design__popup');
+	$action = $variables['form']['#action'];
+	$html  = '<textarea id="image-annotate-text" name="text"></textarea>';
+	$html .= '<input type="submit" class="image-annotate-edit-ok" name="op" value="Save"/>';
+	if (strpos($action,'create') === false) {
+		$html .= '<a class="image-annotate-edit-delete">Delete</a>';
+	}
+	$html .= '<a class="image-annotate-edit-close">Cancel</a>';
+	return $html;
+}
+*/
+
+/**
+ * preprocess function
+ */
+/*
+function image_annotate_preprocess_comment_wrapper(&$variables) {
+	dpm($variables, 'image_annotate_preprocess_comment_wrapper');
+	unset($variables['subject']);
+}
+*/
+
+/**
+ * Implements hook_theme()
+ */
+/*
+function image_annotate_theme($existing, $type, $theme, $path) {
+	return array(
+			'comment_form__image_annotate' => array(
+					'render element' => 'form',
+			),
+	);
+}
+*/
+
+/**
+ * Implements hook_forms().
+ */
+/*
+function image_annotate_forms($form_id, $args) {
+	$forms = array();
+	$forms["image_annotate_add_form"]['callback'] = 'comment_form';
+	$forms["image_annotate_edit_form"]['callback'] = 'comment_form';
+	return $forms;
+}
+*/
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+/*
+function image_annotate_form_image_annotate_add_form_alter(&$form, &$form_state) {
+	unset($form['subject']);  // remove subject
+	unset($form['author']);   // remove author
+	unset($form['comment_body']['und']['0']['#title']);  // remove textarea label and *
+	unset($form['comment_body']['und']['0']['value']['#title']);  // remove textarea label and *
+	$form['actions']['submit']['#attributes']['class'] = array('0' => 'image-annotate-edit-ok',);
+}
+*/
+
+/**
+ * Display the create form of a comment/note
+ * //@todo Check if this works the same in D7
+ */
+function _image_annotate_note_create($nid) {
+  if (user_access('post comments') && user_access('access comments')) {
+  	include_once(drupal_get_path('module', 'comment') . '/comment.module');
+  	
+	$node = node_load($nid);
+	//$form = drupal_get_form("image_annotate_add_form", $node);
+	$form = drupal_get_form("comment_node_{$node->type}_form", $node);
+	
+	unset($form['comment_body']['und']['0']['format']);  // remove textarea format tips and help text
+	unset($form['subject']);  // remove subject
+	unset($form['author']);   // remove author
+	unset($form['comment_body']['und']['0']['#title']);  // remove textarea label and *
+	unset($form['comment_body']['und']['0']['value']['#title']);  // remove textarea label and *
+	$form['actions']['submit']['#attributes']['class'] = array('0' => 'image-annotate-edit-ok',);
+	$form['#action'] = '/?q=comment/reply/'+ $nid;
+	
+	print drupal_render($form);
+	return TRUE;
+  }
+}
+
+/**
+ * comment_edit($cid) //D6
+ * comment_edit_page($comment) //D7
+ * Display the edit form of a comment/note
+ * //@todo Check if comment.module's edit page works with $cid
+ * // http://api.drupal.org/api/drupal/modules--comment--comment.module/function/comment_edit_page/7
+ */
+function _image_annotate_note_edit($aid) {
+  $cid = db_query('SELECT cid FROM {image_annotate} WHERE aid = :aid', array(':aid' => $aid))->fetchField();
+  include_once(drupal_get_path('module', 'comment') . '/comment.module');
+  include_once(drupal_get_path('module', 'comment') . '/comment.admin.inc');
+  
+  $comment = comment_load($cid);
+  $node = node_load($comment->nid);
+  
+  $form = drupal_get_form("comment_node_{$node->type}_form", $comment);
+  //array_unshift($form['#theme'], 'comment_form__node_design__popup');
+  
+  unset($form['subject']);  // remove subject
+  unset($form['author']);   // remove author
+  unset($form['comment_body']['und']['0']['format']);  // remove textarea format tips and help text
+  unset($form['comment_body']['und']['0']['value']['#title']);  // remove textarea label and *
+  $form['actions']['submit']['#attributes']['class'] = array('0' => 'image-annotate-edit-ok',);
+  $form['#action'] = '/?q=comment/' . $cid . '/edit';
+  
+  
+  $form2 = drupal_get_form('comment_confirm_delete', $comment);
+  
+  unset($form2['actions']['cancel']);
+  unset($form2['description']);
+  $form2['actions']['submit']['#attributes']['class'] = array('0' => 'image-annotate-edit-delete',);
+  $form2['#action'] = '/?q=comment/' . $cid . '/delete';
+  
+  print drupal_render($form);
+  print drupal_render($form2);
+  
+  return TRUE;
+}
+
+/**
+ * http://drupal.org/update/modules/6/7#remove_op
+ * //hook_node_delete() //D7
+ * // Implementation of hook_nodeapi(). //D6
+ * 
+ * Implements of hook_node_delete().
+ */
+function image_annotate_node_delete(&$node) {
+    //@todo Do proper D7 code
+      db_query("DELETE FROM {image_annotate} WHERE nid = %d", $node->nid);
+}
+
+/**
+ *  // http://drupal.org/update/modules/6/7
+ *  // Implements of hook_perm(). //D6
+ * Implements of hook_permission(). //D7
+ */
+function image_annotate_permission() {
+//  return array('administer image annotations', 'create image annotations', 'view image annotations');
+    //@todo Check if array is constructed correctly, looks OK on site
+    return array(
+    'administer image annotations' => array(
+      'title' => t('Administer image annotations'),
+      'description' => t('Perform maintenance tasks for image annotations'),
+    ),
+        'create image annotations' => array(
+      'title' => t('Create image annotations'),
+      'description' => t('Annotate images with image annotations'),
+    ),
+         'view image annotations' => array(
+      'title' => t('View image annotations'),
+      'description' => t('View images with image annotations'),
+    ),  
+        ); //End array
+}
+
+
+/**
+ * CCK's hook_field_formatter_info(). //D6
+ * Implements Field API's hook_field_formatter_info().
+ * http://api.drupal.org/api/drupal/modules--field--field.api.php/function/hook_field_formatter_info/7
+ * http://drupal.org/node/1169436 - "image_styles" instead of "imagecache_presets"
+ * http://drupal.org/node/728792 - Updating CCK Field Modules from D6 to D7
+ * http://eosrei.net/articles/2011/03/creating-image-caption-field-api-formatter
+ */
+function image_annotate_field_formatter_info() {
+  $formatters = array();
+  $formatters['image_annotate'] = array(
+      'label' => t('Image with annotations'),
+      'field types' => array('image'),
+      'description' => t('Display a picture and its annotations.'),
+    );
+  return $formatters;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function image_annotate_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  drupal_add_js('misc/collapse.js');
+  
+  //debug
+  //dpm($entity, 'entity');
+  //dpm($instance, 'instance');
+  //dpm($field, 'field');
+  //dpm($entity_type, 'entity_type');
+  //dpm($items, 'items');
+  //dpm($display, 'display');
+  
+  $element = array();
+  foreach ($items as $delta => $item) {
+  	
+	if (user_access('view image annotations') || user_access('create image annotations') || user_access('administer image annotations')) {
+		// Retrieve all the annotations for that image field
+		// We sort by area (height*width) to make sure small annotations are always on the top and avoid having some unhoverable ones
+		$result = db_query('SELECT i.*, c.uid, b.comment_body_value, c.name ' .
+		' FROM {image_annotate} i ' .
+		' JOIN {comment} c ON i.cid = c.cid ' .
+		' JOIN {field_data_comment_body} b ON c.cid = b.entity_id ' .
+		' WHERE i.field_name = :field AND c.nid = :nid ' .
+		' ORDER BY (i.size_height*i.size_width) ASC',
+		 array(':field' => $field['field_name'], ':nid' => $entity->nid));
+		
+		// Build the array of notes settings
+		global $user;
+		$notes = array();
+		foreach ($result as $note) {
+		  //the available data would be mapped to object properties here
+		  $editable = user_access('administer image annotations') || (user_access('create image annotations') && $note->uid && $note->uid == $user->uid);
+		  $author = $note->name;
+		  $text = '"' . check_plain($note->comment_body_value) . '"<span class="author"> ' . t('by') . ' ' . $author . '</span>';
+		  if (user_access('access comments')) $text .= '<span class="actions">» ' . l(t('View comment'), $_GET['q'], array('fragment'=>'comment-' . $note->cid)) . '</span>';
+		  $notes[] = array(
+		    'aid' => $note->aid,
+		    'cid' => $note->cid,
+		    'uid' => $note->uid,
+		    'height' => $note->size_height,
+		    'width' => $note->size_width,
+		    'top' => $note->position_top,
+		    'left' => $note->position_left,
+		    'text' => $text,
+		    'editable' => $editable,
+		  );
+		}//End build all notes
+		
+		// Build the field settings
+		$settings = array(array(
+		  'nid' => $entity->nid,    // JUNLU nid?
+		  'field' => $field['field_name'],
+		  'notes' => $notes,
+		  'editable' => user_access('administer image annotations') || user_access('create image annotations'),
+		  'imgheight' => $item['height'],
+		  'imgwidth' => $item['width']
+		));
+		
+		// Load all the JS and CSS magic
+		// Add jQuery UI - http://drupal.org/node/1001508
+		// Attach js - http://drupal.org/node/1114376
+		drupal_add_js(array('imageAnnotate' => $settings), 'setting');
+		// jquery_ui_add(array('ui.resizable', 'ui.draggable')); //D6
+		drupal_add_library('system', 'ui.resizable'); //D7
+		drupal_add_library('system', 'ui.draggable'); //D7
+		drupal_add_js(drupal_get_path('module', 'image_annotate') . '/tag.js'); // @todo double-check add_js and add_css in D7
+		drupal_add_css(drupal_get_path('module', 'image_annotate') . '/tag.css');
+	    
+    	// @todo Rewrite D7 with "image_styles"
+    	// http://drupal.org/node/958726#comment-3959604 - theme('image_style')
+		$class = 'image-annotate-' . $field['field_name'];
+		$element[$delta] = array(
+			'#theme' => 'image',
+			'#path' => $item['uri'],
+			'#height' => $item['height'],
+			'#width' => $item['width'],
+      		'#alt' => $item['alt'],
+      		'#title' => $item['title'],
+      		'#attributes' => array('class' => $class),
+		);
+
+		//dpm($settings, "settings");
+		//dpm($element, "element");
+	}
+
+  }
+
+  return $element;
+  
+}
+
