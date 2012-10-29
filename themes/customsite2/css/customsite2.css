@@ -1,0 +1,108 @@
+/* This file will hold styles for the mobile version of your website (mobile first). */
+/* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
+
+/* Main Menu */
+.navigation {
+  margin-top: 40px;
+}
+.navigation ul.main-menu li {
+width: 25%;
+}
+
+/* User Menu */
+#zone-user .region-user-second ul.menu li.leaf {
+  float:right;
+  list-style:none;
+  display:inline-block;
+  padding-left:20px;
+}
+
+/* Bottom Menu */
+#zone-footer .region-footer-first ul.menu li.leaf{
+  float:left;
+  padding-left:20px;
+  display:inline-block;
+  list-style:none;
+}
+
+/* remove underline from some links */
+h1.site-name a,
+.jcarousel-skin-default .jcarousel-next,
+.jcarousel-skin-default .jcarousel-prev {
+  border: 0;
+}
+
+/* Footer */
+.break {
+  width: 920px;
+  margin: 10px auto;
+  border-top: 1px solid #6E727A;
+  border-bottom: 1px solid #4B4E56;
+}
+#zone-footer .region-footer-first {
+  margin-top:20px;
+}
+#zone-footer .region-footer-second {
+  margin-top:10px;
+  text-align: center;
+}
+
+/*jcarousel Styles*/
+.jcarousel-skin-default .jcarousel-container-horizontal {
+  width: 488px;
+  height: 322px;
+}
+
+.jcarousel-skin-default .jcarousel-clip-horizontal {
+  width: 488px;
+}
+
+.jcarousel-skin-default .jcarousel-prev-horizontal {
+  top: 165px;
+}
+
+.jcarousel-skin-default .jcarousel-next-horizontal {
+  top: 165px;
+}
+
+.jcarousel-skin-default .jcarousel-item {
+  width: 480px;
+  height: 320px;
+}
+
+/*Button Style*/
+.dm_button {
+  float:left;
+  font:200%/300% "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif;
+  width:400px;
+  height:101px;
+  text-align:center;
+  white-space:nowrap;
+}
+/*Button link styles*/
+.dm_button a:link, .dm_button a:visited {
+  color: #eee;
+  background-color:#1e5184;
+  font-size:1em;
+  font-weight:bolder;
+  text-decoration: none;
+  border-bottom:0.1em solid #555;
+  border-right:0.1em solid #555;
+  border-top:0.1em solid #ccc;
+  border-left:0.1em solid #ccc;
+  border-radius: 20px;
+  margin: 0.2em;
+  padding:0.2em;
+  display:block;
+}
+.dm_button a:hover {
+  background-color:#003366;
+  color:#999;
+  border-top:0.1em solid #777;
+  border-left:0.1em solid #777;
+  border-bottom:0.1em solid #aaa;
+  border-right:0.1em solid #aaa;
+  border-radius: 20px;
+  padding:0.2em;
+  margin: 0.2em;
+}
