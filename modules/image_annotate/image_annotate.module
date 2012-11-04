@@ -17,7 +17,7 @@
 function image_annotate_comment_insert($comment) {
   if (user_access('create image annotations') || user_access('administer image annotations')) {
 
-      if (is_numeric($_POST['image-annotate']) && $_POST['image-annotate']) {
+      if (array_key_exists('image-annotate', $_POST) && is_numeric($_POST['image-annotate'])) {
         global $user;
         $field = preg_replace("/[^a-zA-Z0-9_s]/", "", $_POST['image-annotate-field']);
         // TODO: check position.size is inside the picture
@@ -214,12 +214,15 @@ function _image_annotate_note_create($nid) {
 	$form = drupal_get_form("comment_node_{$node->type}_form", $node);
 	
 	unset($form['comment_body']['und']['0']['format']);  // remove textarea format tips and help text
-	unset($form['subject']);  // remove subject
 	unset($form['author']);   // remove author
 	unset($form['comment_body']['und']['0']['#title']);  // remove textarea label and *
 	unset($form['comment_body']['und']['0']['value']['#title']);  // remove textarea label and *
+	unset($form['actions']['preview']);  // remove "preview" button
+	unset($form['subject']['#title']);  // remove subject label
 	$form['actions']['submit']['#attributes']['class'] = array('0' => 'image-annotate-edit-ok',);
-	$form['#action'] = '/?q=comment/reply/'+ $nid;
+	$form['#action'] = '/?q=comment/reply/' . $nid;
+	$form['subject']['#theme'] = 'hidden';
+	$form['subject']['#value'] = 'Image Annotation';
 	
 	print drupal_render($form);
 	return TRUE;
@@ -244,13 +247,15 @@ function _image_annotate_note_edit($aid) {
   $form = drupal_get_form("comment_node_{$node->type}_form", $comment);
   //array_unshift($form['#theme'], 'comment_form__node_design__popup');
   
-  unset($form['subject']);  // remove subject
   unset($form['author']);   // remove author
   unset($form['comment_body']['und']['0']['format']);  // remove textarea format tips and help text
   unset($form['comment_body']['und']['0']['value']['#title']);  // remove textarea label and *
+  unset($form['actions']['preview']);  // remove "preview" button
+  unset($form['subject']['#title']);  // remove subject label
   $form['actions']['submit']['#attributes']['class'] = array('0' => 'image-annotate-edit-ok',);
   $form['#action'] = '/?q=comment/' . $cid . '/edit';
-  
+  $form['subject']['#theme'] = 'hidden';
+  $form['subject']['#value'] = 'Image Annotation';  
   
   $form2 = drupal_get_form('comment_confirm_delete', $comment);
   

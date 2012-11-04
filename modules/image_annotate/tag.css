@@ -61,11 +61,12 @@
   width: 244px;
 }
 
-#image-annotate-edit-form form {
+#image-annotate-edit-form form.comment-form {
   clear: right;
   margin: 0 !important;
   padding: 0;
   z-index: 999;
+  height: 48px;
 }
 
 #image-annotate-edit-form .box {
@@ -81,7 +82,7 @@
   height: 48px;
   font-family: Verdana, Sans-Serif;
   font-size: 12px;    
-  width: 244px;
+  width: 242px;  /* due to border 1px */
 }
 
 #image-annotate-edit-form fieldset {
@@ -89,7 +90,7 @@
 }
 
 #image-annotate-edit-form .form-item {
-  margin: 0 0 5px 0;
+  margin: 0 0 0 0;
 }
 
 #image-annotate-edit-form .form-actions {
@@ -97,28 +98,37 @@
 }
 
 #image-annotate-edit-form .form-button,
-#image-annotate-edit-form .form-submit {
+#image-annotate-edit-form .form-submit,
+#image-annotate-edit-form a {
     background-color: #fff;
     background-repeat: no-repeat;
     background-position: 4px 4px;
     border: solid 1px #ccc;
+    border-radius: 2px;
     color: #333;
     cursor: pointer;
     display: block;
     float: left;    
     font-family: Verdana, Sans-Serif;
-    font-size: 12px;        
-    height: 26px;
+    font-size: 12px;
+    font-weight: normal;      
+    height: 16px;
+    width: 48px;
     line-height: 18px;
     padding: 4px 0 4px 24px;
     margin: 6px 6px 0px 0;
-    width: 74px;
     text-align: left;
+    text-transform: capitalize;
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -ms-box-sizing: content-box;
+    /* if border-box model: height: 26px; width: 74px; */
 }
 #image-annotate-edit-form .form-submit:hover {
     background-color: #eee;
 }
-
+/*
 #image-annotate-edit-form a {
     background-color: #fff;
     background-repeat: no-repeat;
@@ -129,13 +139,16 @@
     display: block;
     float: left;    
     font-family: Verdana, Sans-Serif;
-    font-size: 12px;        
+    font-size: 12px;
+     font-weight: normal;      
     height: 16px;
     line-height: 18px;
     padding: 4px 0 4px 24px;
     margin: 6px 6px 0px 0;
     width: 48px;
 }
+*/
+
 #image-annotate-edit-form a:hover {
     background-color: #eee;
 }
@@ -157,12 +170,12 @@
   opacity: 0.8;
 }
 
-.image-annotate-edit-ok {
+#image-annotate-edit-form .comment-form .form-actions .image-annotate-edit-ok {
     background-image: url(images/accept.png);
 }
-.image-annotate-edit-delete {
+#image-annotate-edit-form form.confirmation .form-actions .image-annotate-edit-delete {
     background-image: url(images/delete.png);
 }
-.image-annotate-edit-close {
+#image-annotate-edit-form .image-annotate-edit-close {
     background-image: url(images/cross.png);
 }

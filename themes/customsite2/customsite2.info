@@ -50,7 +50,8 @@ css[advanced.css][description] = 'This file defines advanced CSS3 elements like 
 css[advanced.css][options][weight] = '20'
 css[customsite2.css][name] = 'customsite2 CSS customizations'
 css[customsite2.css][description] = 'This file defines CSS customizations for customsite2.'
-css[customsite2.css][options][weight] = '30'
+css[customsite2.css][options][weight] = '3000'
+css[customsite2.css][options][group] = 3000
 
 settings[toggle_logo] = '1'
 settings[toggle_name] = '1'

@@ -1,0 +1,597 @@
+/* This file will hold the main styles for your website. */
+
+/* HEADER SECTION */
+body {
+  font-family: 'Ubuntu',arial,sans-serif;
+}
+/* @JUNLU new ------------------- */
+html, body {
+  height:100%;
+  width:100%;
+  margin: 0;
+  padding: 0;
+}
+html {
+  overflow-y: scroll;
+}
+#page {
+  height: auto !important;
+  min-height: 100%;
+  height: 100%;
+  width:100%;
+  position: relative;
+}
+#section-content {
+  padding-bottom:149px;
+}
+#section-footer {
+  position:absolute;
+  bottom:0;
+  left: 0;
+  height:149px;
+  width:100%;
+}
+/* ------------------------------ */
+
+/* zone-user */
+#zone-user {
+  height: 29px;
+}
+.zone-user .block {
+  margin: 0 5px;
+}
+#zone-user .block-title {
+  display: none;
+}
+#zone-user ul li {
+  display: inline;
+  padding: 0 2px;
+}
+#zone-user ul li a {
+  line-height: 27px;
+  font-size: 13px;
+  /* @JUNLU deleted
+  border: 2px solid transparent; 
+  */ 
+}
+
+/* region-user-first */
+.region-user-first {
+  float: left; /* LTR */
+}
+.region-user-first .block {
+  float: left; /* LTR */
+}
+
+/* region-user-second */
+.region-user-second {
+  float: right; /* LTR */
+}
+.region-user-second .block {
+  float: right; /* LTR */
+}
+
+/* block-system-user-menu */
+.zone-user #block-system-user-menu {
+  margin-top: 4px;
+}
+.zone-user #block-system-user-menu ul li {
+  float:right;      /* @JUNLU new */
+  list-style:none;  /* @JUNLU new */
+  display:inline-block; /* @JUNLU new */
+  padding:0 0 0 10px;    /* @JUNLU override=> padding: 0; */
+}
+.zone-user #block-system-user-menu ul li a {
+  line-height: 23px;
+  font-size: 10px;
+}
+.not-logged-in #block-system-user-menu ul {
+  background: url("../images/login.png") no-repeat scroll left bottom;  /* LTR */
+  padding-left: 20px; /* LTR */
+}
+
+/* block-locale-language */
+#zone-user #block-locale-language ul {
+  margin-bottom: 0;
+}
+#zone-user #block-locale-language ul li {
+  padding: 0 3px;
+}
+#zone-user #block-locale-language img {
+  vertical-align: middle;
+}
+
+/* zone-branding-wrapper */
+#zone-branding-wrapper {
+  border-bottom: 1px solid transparent;
+}
+#zone-branding #block-search-form {
+  float: right; /* LTR */
+  width: 95%;
+  max-width: 40em;
+}
+#zone-branding #block-search-form .container-inline {
+  padding-right: 5em; /* LTR */
+}
+#zone-branding #block-search-form .form-type-textfield  {
+  width: 97%;
+  margin-right: 3%; /* LTR */
+  float: left; /* LTR */
+}
+#zone-branding #block-search-form .form-type-textfield input {
+  width: 100%;
+}
+#zone-branding #block-search-form .form-type-textfield input {
+  font-size: 1.3em;
+}
+#zone-branding #block-search-form .form-actions {
+  float: left; /* LTR */
+  width: 5em;
+  margin-right: -6em; /* LTR */
+  margin-left: 5px; /* LTR */
+}
+#zone-branding #block-search-form .form-submit {
+  margin-top: 1em;
+  width: 5em;
+  text-indent: -9999px;
+  background: url("../images/search.png") no-repeat scroll center center;
+  border: 1px solid transparent;
+}
+.region-branding .branding-data {
+  float: left; /* LTR */
+}
+
+/* zone-menu */
+#zone-menu .block-title {
+  display: none;
+}
+.zone-menu ul li {
+  display: inline;
+  padding: 0 5px;
+}
+.zone-menu ul li a {
+  line-height: 27px;
+  font-size: 13px;
+}
+
+/* zone-header */
+
+#zone-header {
+  margin-bottom: 15px;
+}
+#zone-header h2.block-title {
+  margin-top: 15px;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+/* region-header-first */
+#region-header-first {
+  float: left; /* LTR */
+}
+#region-header-first .block {
+  float: left; /* LTR */
+}
+
+/* region-header-second */
+#region-header-second {
+  float: right; /* LTR */
+}
+#region-header-second .block {
+  float: right; /* LTR */
+}
+
+/* block-search */
+.block-search {
+  padding: 10px;
+}
+
+/* CONTENT SECTION */
+
+#zone-content {
+  padding-top: 15px;
+}
+#region-content {
+  padding-top: 15px;
+  overflow: auto;
+}
+
+/* needs work for mobile compatibility
+#region-content::-webkit-scrollbar {
+  width: 10px;
+  height: 16px;
+}
+#region-content::-webkit-scrollbar:hover {
+  background: whitesmoke;
+}
+#region-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+#region-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+*/
+
+/* zone-postscript-wrapper */
+
+#zone-postscript-wrapper .block {
+  padding: 15px 0;
+}
+#zone-postscript h2.block-title {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* #zone-footer */
+#zone-footer .region {
+  padding: 20px;
+}
+#zone-footer ul li {
+  display: inline;
+}
+#zone-footer .block-title {
+  display: none;
+}
+/* @JUNLU new ---------------- */
+#zone-footer-wrapper {
+  margin-top:40px;
+}
+/* Footer Menu */
+#zone-footer .region-footer-first ul.menu li.leaf{
+  float:left;
+  padding-left:8px;
+  display:inline-block;
+  list-style:none;
+}
+#zone-footer .region-footer-first ul.menu li.leaf a {
+  line-height: 27px;
+}
+/* Footer Second */
+#zone-footer .region-footer-second {
+  text-align: center;
+  padding:0px;
+}
+/* --------------------------- */
+
+/* BLOCKS */
+
+h2.block-title {
+  border-bottom: 1px solid;
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: 30px;
+  padding-bottom: 6px;
+}
+
+/* FONTS */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Ubuntu',arial,sans-serif;
+  letter-spacing: normal;
+}
+h1 {
+  font-size: 25px;
+}
+h2 {
+  font-size: 20px;
+}
+h3 {
+  font-size: 17px;
+}
+h4 {
+  font-size: 15px;
+}
+h5 {
+  font-size: 13px;
+}
+h6 {
+  font-size: 11px;
+}
+h1.site-name, h2.site-name {
+  font-size: 25px;
+}
+li.comment_forbidden {
+  font-size: 11px;
+}
+.node-links ul li a, .comment-links ul li a {
+  font-size: 10px !important;
+  padding: 4px 5px 3px !important;
+}
+
+#region-content .node-teaser .node-title {
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid;
+  margin: 0 -10px;
+  min-height: 15px;
+  padding: 15px 31px;
+}
+
+#region-content .node-teaser, #region-content .comment {
+  border: 1px solid;
+  border-top: none;
+  margin: 20px 0;
+}
+#region-content .content {
+  padding: 0 10px;
+  margin: 10px 0;
+}
+#region-content .submitted, .comment footer {
+  padding: 10px;
+}
+#region-content .submitted {
+  padding: 10px;
+}
+#region-content .node-links {
+  padding: 0 10px;
+}
+
+/* LINKS */
+
+a:link, a:visited {
+  text-decoration: none;
+}
+/* @JUNLU new --------------------- */
+a:focus, a:hover {
+  border-bottom: 1px solid;
+}
+/* -------------------------------- */
+ul li a.active {
+  font-weight: bold;
+}
+.node-links, .comment-links {
+  float: right; /* LTR */
+  margin: 10px 0;
+}
+.node-links ul li:not(.comment_forbidden) a, .comment-links ul li:not(.comment_forbidden) a {
+  border-radius: 5px;
+  font-weight: normal;
+  float: right; /* LTR */
+}
+.node-links ul li.addtoany a {
+  border: none;
+  background: none;
+  float: right; /* LTR */
+}
+
+/* BUTTONS */
+button, input[type="reset"], input[type="submit"], input[type="button"] {
+  border-radius: 2px;
+  height: 30px;
+}
+input[id|="edit-submit"] {
+  border: 1px solid transparent;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+}
+.node footer {
+  font-size: 10px;
+}
+
+/* COMMENTS */
+
+.comment header {
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid;
+  margin: 0 -10px;
+  min-height: 15px;
+  padding: 15px 31px;
+}
+.comment header h3 {
+  margin-bottom: 0;
+  font-size: 13px;
+}
+.comment footer {
+  padding: 5px;
+  background: url("../images/comment-arrow.png") no-repeat scroll 17% bottom;  /* LTR */
+  height: 28px;
+  font-size: 8px;
+}
+.comment > div {
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0 10px;
+}
+.node .username, .comment .username {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.comment footer > time {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+h2.comment-form {
+  border: 1px solid;
+  border-bottom: none;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  margin-top: 40px;
+  margin-bottom: 0;
+}
+.comment-form {
+  border: 1px solid;
+  padding: 10px;
+}
+
+/* MISC */
+
+/* Views */
+.views-exposed-widgets .views-submit-button {
+  clear: both;
+}
+
+legend {
+  font-weight: bold;
+}
+
+
+/* @JUNLU new ---------------------- */
+
+/* remove underline from some links */
+#region-menu nav > ul.main-menu > li > a,
+h1.site-name a,
+.jcarousel-skin-default .jcarousel-next,
+.jcarousel-skin-default .jcarousel-prev {
+  border: 0;
+}
+
+/* Main Menu */
+#zone-menu-wrapper {
+  background: #489EC8;
+  border-bottom: 1px solid #306B87;
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  -ms-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  -o-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  -khtml-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  min-height: 30px;
+  z-index: 10;
+}
+#region-menu .region-inner {
+  margin: 0 -10px;
+}
+#region-menu nav > ul.main-menu > li {
+  background: none;
+  float: left;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 150px;
+  position: relative;
+}
+#region-menu nav > ul.main-menu > li > a,
+#region-menu nav > ul.main-menu > li > a:link,
+#region-menu nav > ul.main-menu > li > a:visited {
+  color: #fff;
+}
+#region-menu nav > ul.main-menu > li > a {
+  display: block;
+  padding: 6px 15px;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px rgba(0,0,0,.5);
+  text-align: center;
+  font-size:1.2em;
+}
+#region-menu nav > ul.main-menu > li:hover > a,
+#region-menu nav > ul.main-menu > li.hover > a {
+  background: rgba(255,255,255,.2);
+}
+#region-menu nav > ul.main-menu > li > a.active {
+  background: #0779BE;
+}
+
+/* Drop Down Menus */
+#region-menu nav > ul.main-menu > li ul,
+#region-menu nav > ul.main-menu > li .view {
+  display: none;
+}
+#region-menu nav > ul.main-menu > li:hover ul,
+#region-menu nav > ul.main-menu > li:hover .view,
+#region-menu nav > ul.main-menu > li.hover ul,
+#region-menu nav > ul.main-menu > li.hover .view {
+  display: block;
+  position: absolute;
+}
+
+/* Secondary Menu */
+#region-menu nav.navigation-secondary {
+  float: right;
+  position: relative;
+  top: 7px;
+}
+#region-menu nav.navigation-secondary ul.main-menu > li > a {
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+
+/*jcarousel Styles
+.jcarousel-skin-default .jcarousel-container-horizontal {
+  width: 488px;
+  height: 322px;
+}
+
+.jcarousel-skin-default .jcarousel-clip-horizontal {
+  width: 488px;
+}
+
+.jcarousel-skin-default .jcarousel-prev-horizontal {
+  top: 165px;
+}
+
+.jcarousel-skin-default .jcarousel-next-horizontal {
+  top: 165px;
+}
+
+.jcarousel-skin-default .jcarousel-item {
+  width: 480px;
+  height: 320px;
+}
+*/
+
+/* Block - 3easysteps */
+#dm_3easysteps_img, #dm_3easysteps_imgtag {
+  width:100%;
+}
+#dm_3easysteps_text ul li {
+  list-style:none;
+  display:inline-block;
+  float:left;
+  width:33%;
+  text-align:center;
+  font-size:1.1em;
+  font-weight:bold;
+}
+#dm_3easysteps_text {
+  margin-bottom:100px;
+}
+
+/*Button Style*/
+#dm_3easysteps_button {
+  
+  font:200%/300% "Lucida Grande", Geneva, Verdana, Arial, Helvetica, sans-serif;
+  /* width:400px;
+  height:101px; 
+  float:left;*/
+  text-align:center;
+  white-space:nowrap;
+}
+/*Button link styles*/
+#dm_3easysteps_button a:link, 
+#dm_3easysteps_button a:visited {
+  color: #eee;
+  background-color:#1e5184;
+  font-size:1em;
+  font-weight:bolder;
+  text-decoration: none;
+  border-bottom:0.1em solid #555;
+  border-right:0.1em solid #555;
+  border-top:0.1em solid #ccc;
+  border-left:0.1em solid #ccc;
+  border-radius: 20px;
+  margin: 1em;
+  padding:0.2em;
+  display:block;
+}
+#dm_3easysteps_button a:focus,
+#dm_3easysteps_button a:hover {
+  background-color:#003366;
+  color:#999;
+  border-top:0.1em solid #777;
+  border-left:0.1em solid #777;
+  border-bottom:0.1em solid #aaa;
+  border-right:0.1em solid #aaa;
+  border-radius: 20px;
+  padding:0.2em;
+  margin: 1em;
+}
+
+/* --------------------------------- */
